@@ -3,8 +3,8 @@ require_relative "knight.rb"
 class Board
   def knight_moves(start, destination)
     current = make_tree(start, destination)
-    count = count_moves(current, start)
-    console_print(count, start, destination)
+    pool = count_moves(current, start)
+    console_print(pool, start, destination)
   end
 
   def make_tree(start, finish)
@@ -22,15 +22,19 @@ class Board
   end
 
   def count_moves(current, start)
-    count = 0
+    pool = []
     until current.position == start
-      count += 1
+      pool.push(current.position)
       current = current.parent
     end
-    count
+    pool.push(current.position)
   end
 
-  def console_print(count, start, destination)
-    puts "You made it in #{count} moves to get from #{start} to #{destination}!"
+  def console_print(pool, start, destination)
+    puts "You made it in #{pool.size-1} moves to get from #{start} to #{destination}!"
+    puts "Those are the moves you must do: "
+    pool.reverse.each do |move|
+        puts move.to_s
+    end
   end
 end
